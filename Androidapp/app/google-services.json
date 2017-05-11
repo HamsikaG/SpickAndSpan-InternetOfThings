@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "124388751707",
+    "firebase_url": "https://beacon-pushnotification.firebaseio.com",
+    "project_id": "beacon-pushnotification",
+    "storage_bucket": "beacon-pushnotification.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124388751707:android:e4fc4545c402f5da",
+        "android_client_info": {
+          "package_name": "com.example.lab4.lab4android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124388751707-ro1nda20qbh3u3bj6cbpeg5bq2rfbklm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9BTT0DKjiFZkhIfheVwsQ-ycGbZFae2A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

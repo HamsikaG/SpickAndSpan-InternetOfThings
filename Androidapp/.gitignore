@@ -1,0 +1,12 @@
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+app/libs/
+Would skip repository app/src/main/java/com/example/lab4/lab4android
+gradlew.bat

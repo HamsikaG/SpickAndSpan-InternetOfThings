@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<link rel="icon" type="image/png" href="img/favicon.ico">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+	<title>Spick and Span</title>
+
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+
+
+    <!-- Bootstrap core CSS     -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Animation library for notifications   -->
+    <link href="css/animate.min.css" rel="stylesheet"/>
+
+    <!--  Light Bootstrap Table core CSS    -->
+    <link href="css/light-bootstrap-dashboard.css" rel="stylesheet"/>
+
+
+    <!--  CSS for Demo Purpose, don't include it in your project     -->
+    <link href="css/demo.css" rel="stylesheet" />
+
+
+    <!--     Fonts and icons     -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+    <link href="css/pe-icon-7-stroke.css" rel="stylesheet" />
+
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="sidebar" data-color="azure" data-image="img/sidebar-2.jpg">
+
+
+    	<div class="sidebar-wrapper">
+            <div class="logo">
+                <a class="simple-text">
+                    Spick & Span
+                </a>
+            </div>
+
+            <ul class="nav">
+                <li class="active">
+                    <a href="http://localhost:8080/dashboard">
+                        <i class="pe-7s-graph"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://localhost:8080/user">
+                        <i class="pe-7s-user"></i>
+                        <p>Users</p>
+                    </a>
+                </li>
+								<li>
+										<a href="http://localhost:8080/messaging">
+												<i class="pe-7s-news-paper"></i>
+												<p>Messaging</p>
+										</a>
+								</li>
+
+            </ul>
+    	</div>
+    </div>
+
+    <div class="main-panel">
+        <nav class="navbar navbar-default navbar-fixed">
+            <div class="container-fluid">
+                <div class="navbar-header">
+
+                    <a class="navbar-brand" href="#"><i class="fa fa-dashboard"> </i> Dashboard</a>
+                </div>
+
+
+								  <ul class="nav navbar-nav navbar-right">
+								<li>
+										<a href="#">
+												<p>Log out</p>
+										</a>
+								</li>
+								  </ul>
+            </div>
+        </nav>
+
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card ">
+                            <div class="header">
+                                <h4 class="title">Notifications</h4>
+                                <p class="category"></p>
+                            </div>
+                            <div class="content">
+                                <div class="table-full-width">
+                                    <table class="table" >
+                                        <tbody id="notiftable" >
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                              <div class="footer">
+                                    <hr>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <footer class="footer">
+						<p class="copyright pull-right"> Clean hands are safe hands</p>
+        </footer>
+
+    </div>
+</div>
+
+
+</body>
+    <script src="js/jquery-1.10.2.js" type="text/javascript"></script>
+	<script src="js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="js/bootstrap-checkbox-radio-switch.js"></script>
+	<script src="js/chartist.min.js"></script>
+    <script src="js/bootstrap-notify.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+	<script src="js/light-bootstrap-dashboard.js"></script>
+	<script src="js/demo.js"></script>
+	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="http://localhost:8080/socket.io/socket.io.js"></script>
+	<script type="text/javascript">
+	var socket;
+    	$(document).ready(function(){
+
+
+				 socket = io.connect("http://localhost:8080/");
+				console.log("Socket with id in dashboard connected"+socket.id)
+
+
+			socket.on('eventafterpost',function(data,callthis){
+		 				 console.log("heard post event"); // console.log dont work -use callbacks
+		 				 callthis("I was called with data "+data.timestamp);
+
+		 				 myFunction(data);
+		  });
+
+		  socket.emit('woody',{});
+
+			socket.emit('refresh', {});
+
+			/*$('#refresh').on('click', function() {
+
+						socket.emit('refresh', {});
+
+    	});*/
+
+			socket.on('NewNotif', function(d) {
+				emptytable();
+					socket.emit('refresh', {});
+
+			});
+
+
+				socket.on('UpdateOnPage', function(data) {
+					console.log('Update ', data);
+					myFunction(data);
+
+				});
+			});
+
+			function emptytable()
+			{
+				var tab = document.getElementById("notiftable");
+				while (tab.hasChildNodes()) {
+			    tab.removeChild(tab.firstChild);
+					}
+			}
+
+
+
+			function myFunction(data) {
+			    var mytr = document.createElement("TR");
+					var td1 = document.createElement("TD");
+										var td2 = document.createElement("TD");
+															var td3 = document.createElement("TD");
+
+					var mylabel = document.createElement("LABEL");
+					var labelatt = document.createAttribute("class");
+					labelatt.value = "checkbox";
+					mylabel.setAttributeNode(labelatt);
+
+					 //<i class="pe-7s-bell"> </i>
+					 var myicon = document.createElement("I");
+					 var iconatt = document.createAttribute("class");        // Create a "href" attribute
+					 iconatt.value = "pe-7s-bell";            // Set the value of the href attribute
+					 myicon.setAttributeNode(iconatt);
+
+					 mylabel.appendChild(myicon);
+					 td1.appendChild(mylabel);
+
+					 if(data)
+					 {
+						 td2.innerHTML = " " +data.value+"        "+data.timestamp;
+				}
+				else {
+					td2.innerHTML = "";
+				}
+
+
+
+					var tdatt = document.createAttribute("class");
+					tdatt.value = "td-actions text-right";
+					td3.setAttributeNode(tdatt);
+
+					var mybutton = document.createElement("BUTTON");
+					var batt1 = document.createAttribute("class");
+					batt1.value = "btn btn-danger btn-simple btn-xs";
+					mybutton.setAttributeNode(batt1);
+
+					var myicon2 = document.createElement("I");
+					var iconatt2 = document.createAttribute("class");        // Create a "href" attribute
+					iconatt2.value = "fa fa-times";            // Set the value of the href attribute
+					myicon2.setAttributeNode(iconatt2);
+
+					mybutton.appendChild(myicon2);
+					td3.appendChild(mybutton);
+
+			    mytr.appendChild(td1);
+					mytr.appendChild(td2);
+					mytr.appendChild(td3);
+			    document.getElementById("notiftable").appendChild(mytr);
+			}
+
+
+	</script>
+
+</html>

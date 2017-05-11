@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+  </head>
+
+  <body>
+
+    <div class="container" style="padding-top: 50px;">
+      <div class="jumbotron text-center">
+
+        <h1>SPICK AND SPAN: <span id="update">0</span></h1>
+
+        <div class="row" style="padding: 10px;">
+          <button id="refresh" type="button" class="btn btn-primary">GET</button>
+        </div>
+
+
+      </div>
+    </div>
+
+    <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="js/socket.io.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        // Create a new WebSocket
+        var socket = io();
+
+        $('#refresh').on('click', function() {
+          // get-bpm does not need to send any parameters
+
+          socket.emit('refresh', {});
+        });
+
+        // When the bpm response is received from the server, render the result
+
+
+        socket.on('UpdateOnPage', function(data) {
+          console.log('Update ', data);
+          // Set the html tag value for the coresponding ID to the data
+          $('#update').html(data.value);
+
+        });
+      });
+    </script>
+
+  </body>
+
+</html>
+
+  </body>
+</html>
